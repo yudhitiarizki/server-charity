@@ -11,7 +11,7 @@ const UploadFile = require('../middleware/UploadFile');
 const { Register, Login } = require('../controllers/Users');
 const { CreatePayments, UpdatePayments, GetPayments, GetPaymentsById, DeletePayments, GetPaymentsBySlug } = require('../controllers/Payments');
 const { GetCharities, GetCharitiesBySlug, GetCharitiesByUserId, CreateCharities, UpdateCharities, DeleteCharities } = require('../controllers/Charities');
-const { CreateDonates, GetAllDonates } = require('../controllers/Donates');
+const { CreateDonates, GetAllDonates, GetDonatesBySlug } = require('../controllers/Donates');
 const RefreshToken = require('../controllers/RefreshToken');
 
 const router = express.Router();
@@ -29,18 +29,19 @@ router.post('/payment', AuthToken, AuthPay, CreatePayments);
 router.get('/payment/:userId', AuthToken, GetPaymentsById);
 router.put('/payment/:paymentId', AuthToken, AuthPay, UpdatePayments);
 router.delete('/payment/:paymentId', AuthToken, DeletePayments);
-router.get('/payment-slug/:slug', GetPaymentsBySlug)
+router.get('/payment-slug/:slug', GetPaymentsBySlug);
 
 // Charity
 router.get('/charity', GetCharities);
 router.get('/charity/:slug', GetCharitiesBySlug);
 router.get('/charity-user', AuthToken, GetCharitiesByUserId);
 router.post('/charity', AuthToken, UploadFile, AuthChar, CreateCharities );
-router.put('/charity/:charityId', AuthToken, FileUploads('image', 'image'), AuthChar, UpdateCharities);
+router.put('/charity/:charityId', AuthToken, FileUploads, AuthChar, UpdateCharities);
 router.delete('/charity/:charityId', AuthToken, DeleteCharities);
 
 // Donate
-router.post('/donate/:charityId', FileUploads('transfer', 'transfer'), AuthDon, CreateDonates);
+router.post('/donate', UploadFile, AuthDon, CreateDonates);
 router.get('/donate', GetAllDonates);
+router.get('/donate/:slug', GetDonatesBySlug);
 
 module.exports = router;

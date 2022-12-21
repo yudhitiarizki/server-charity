@@ -9,7 +9,10 @@ const GetCharities = async (req, res) => {
             include: [{
                 model: Users,
                 attributes: ['firstName', 'lastName', 'email']
-            }]
+            }],
+            order: [
+                ['createdAt', 'DESC']
+            ]
         });
 
         charities = charities.map((charity) => {
@@ -17,7 +20,7 @@ const GetCharities = async (req, res) => {
             charity.User = charity.User.dataValues;
             var raise = 0;
             donates.forEach(donate => {
-                if(donate.charityId === charity.charityId){
+                if(donate.slug === charity.slug){
                     raise += donate.donate;
                 };
             });
@@ -70,7 +73,7 @@ const GetCharitiesBySlug = async (req, res) => {
         });
 
         charities.raise = raise;
-        charities.payment = payment;
+        charities.payments = payment;
 
         return res.status(200).json({ charities: charities });
         

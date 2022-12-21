@@ -28,15 +28,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    charityId: {
-      type: DataTypes.INTEGER,
+    slug: {
+      type: DataTypes.STRING,
       allowNull:false
     },
     donate: {
       type: DataTypes.INTEGER,
       allowNull:false
     },
-    transfer: {
+    image: {
       type: DataTypes.STRING,
       allowNull: true,
     }

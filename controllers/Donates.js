@@ -13,10 +13,9 @@ const GetAllDonates = async (req, res) => {
 
 const CreateDonates = async (req, res) => {
     try {
-        const { charityId } = req.params;
-        const { donate, paymentId, userId, transfer } = data_donate;
+        const { donate, paymentId, userId, image, slug } = data_donate;
 
-        await Donates.create({ donate, paymentId, userId, transfer, charityId })
+        await Donates.create({ donate, paymentId, userId, image, slug })
         return res.status(201).json({ 
             message: 'You have succeeded to Donates' 
         });
@@ -28,4 +27,24 @@ const CreateDonates = async (req, res) => {
     };
 };
 
-module.exports = { CreateDonates, GetAllDonates };
+const GetDonatesBySlug = async (req, res) => {
+    try {
+        const { slug } = req.params;
+        const donates = await Donates.findAll({
+            where: {
+                slug: slug
+            }
+        });
+        return res.status(200).json({
+            donates: donates
+        })
+    } catch (error) {
+        console.log(`${req.method} ${req.originalUrl} : ${error.message}`);
+        return res.status(400).json({
+          message: 'Failed to retrive Donates',
+        });
+    }
+}
+
+
+module.exports = { CreateDonates, GetAllDonates, GetDonatesBySlug };

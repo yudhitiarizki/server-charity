@@ -17,15 +17,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false
       },
-      charityId: {
-        type: Sequelize.INTEGER,
+      slug: {
+        type: Sequelize.STRING,
         allowNull:false
       },
       donate: {
         type: Sequelize.INTEGER,
         allowNull:false
       },
-      transfer: {
+      image: {
         type: Sequelize.STRING,
         allowNull: true,
       },

@@ -149,10 +149,6 @@ const AuthPay = async (req, res, next) => {
         }
     };
 
-    
-
-    console.log(number, username)
-
     if( method.match(RE_HTML_ERROR) || number.match(RE_HTML_ERROR) || username.match(RE_HTML_ERROR)){
         return res.status(400).send({
             message: 'Dont write HTML Tag on Field'
@@ -217,7 +213,23 @@ const AuthChar = async (req, res, next) => {
             goal = charity.goal
         }
 
-    };
+    } else {
+        if(!title){
+            return res.status(400).send({
+                message: 'Please write the title!'
+            })
+        }
+        if(!description){
+            return res.status(400).send({
+                message: 'Please write description!'
+            })
+        }
+        if(!goal){
+            return res.status(400).send({
+                message: 'Please write this goal!'
+            })
+        }
+    }
 
     if( title.match(RE_HTML_ERROR) || description.match(RE_HTML_ERROR) || goal.match(RE_HTML_ERROR)){
         return res.status(400).send({
@@ -234,11 +246,23 @@ const AuthChar = async (req, res, next) => {
 }
 
 const AuthDon = async (req, res, next) => {
-    const { donate, paymentId, userId } = req.body;
-    var transfer = req.protocol + '://' + req.get('host') + "/public/uploads/transfer/" + req.file.filename;
+    const { donate, paymentId, userId, slug } = req.body;
+    if(!req.body.fileName) {
+        return res.status(412).send({
+            message: 'Image not found!'
+        })
+    }
+
+    const image = req.body.fileName;
+
+    if ( donate === ''){
+        return res.status(400).send({
+            message: 'Please write this amount!'
+        })
+    }
 
     data_donate = {
-        donate, paymentId, userId, transfer
+        donate, paymentId, userId, image, slug
     };
 
     next();
