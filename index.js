@@ -11,7 +11,7 @@ const public = __dirname + "/public/";
 const PORT = process.env.PORT_SERVER || 3002;
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/public/uploads', express.static(path.join(__dirname, "public/uploads")));
 app.use(router);
